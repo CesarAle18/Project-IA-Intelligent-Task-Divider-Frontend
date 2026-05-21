@@ -33,10 +33,16 @@ import type {
 } from "@/lib/types";
 import { toast } from "sonner";
 
+const FIBONACCI = new Set([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]);
+
 const predictionSchema = z.object({
   sp: z
     .number({ invalid_type_error: "Debe ingresar un número" })
-    .min(1, "Debe ser al menos 1 SP"),
+    .min(1, "Debe ser al menos 1 SP")
+    .refine((val) => FIBONACCI.has(val), {
+      message:
+        "Debe ser un número de la secuencia Fibonacci: 1, 2, 3, 5, 8, 13, 21, 34, 55",
+    }),
   experiencia: z.number().min(1).max(3) as z.ZodType<Experiencia>,
   rendimiento: z.number().min(0).max(1),
   complejidad: z
@@ -130,8 +136,7 @@ export function PredictionForm({ onResult }: PredictionFormProps) {
                 <div className="group relative">
                   <Info className="w-3.5 h-3.5 text-muted-foreground cursor-help" />
                   <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-48 p-2 bg-popover border border-border text-popover-foreground text-xs rounded shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
-                    Esfuerzo relativo asignado a la tarea inicial (ej. 1, 2, 3,
-                    5, 8, 13).
+                    Esfuerzo relativo asignado a la tarea inicial. Solo valores de la secuencia Fibonacci: 1, 2, 3, 5, 8, 13, 21, 34, 55.
                   </span>
                 </div>
               </div>
