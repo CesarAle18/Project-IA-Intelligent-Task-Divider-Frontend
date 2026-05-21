@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 interface PageHeaderProps {
-  title: string
-  description?: string
+  title: string;
+  description?: string;
 }
 
 export function PageHeader({ title, description }: PageHeaderProps) {
@@ -15,5 +15,5 @@ export function PageHeader({ title, description }: PageHeaderProps) {
         )}
       </div>
     </div>
-  )
+  );
 }

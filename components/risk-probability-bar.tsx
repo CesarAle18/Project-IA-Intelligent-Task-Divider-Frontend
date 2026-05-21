@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 interface RiskProbabilityBarProps {
   probas: {
-    ALTO: number
-    MEDIO: number
-    BAJO: number
-  }
+    ALTO: number;
+    MEDIO: number;
+    BAJO: number;
+  };
 }
 
 export function RiskProbabilityBar({ probas }: RiskProbabilityBarProps) {
@@ -13,7 +13,7 @@ export function RiskProbabilityBar({ probas }: RiskProbabilityBarProps) {
     { label: "ALTO", value: probas.ALTO, color: "bg-red-500" },
     { label: "MEDIO", value: probas.MEDIO, color: "bg-amber-500" },
     { label: "BAJO", value: probas.BAJO, color: "bg-emerald-500" },
-  ]
+  ];
 
   return (
     <div className="space-y-2.5">
@@ -34,5 +34,5 @@ export function RiskProbabilityBar({ probas }: RiskProbabilityBarProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

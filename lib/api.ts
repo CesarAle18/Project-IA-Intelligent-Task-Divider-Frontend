@@ -5,37 +5,72 @@ import type {
   HistoryResponse,
   AppConfig,
   HealthStatus,
-} from "./types"
+} from "./types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
 
 class ApiError extends Error {
   constructor(
     public status: number,
-    message: string
+    message: string,
+    public details?: any,
   ) {
-    super(message)
-    this.name = "ApiError"
+    super(message);
+    this.name = "ApiError";
   }
 }
 
 async function fetchApi<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-  })
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  if (!response.ok) {
-    throw new ApiError(response.status, `API Error: ${response.statusText}`)
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      signal: options?.signal || controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+      },
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      let message = `API Error ${response.status}: ${response.statusText}`;
+      let details = null;
+
+      try {
+        const body = await response.json();
+        if (body && body.detail) {
+          if (typeof body.detail === "string") {
+            message = body.detail;
+          } else {
+            message = JSON.stringify(body.detail);
+          }
+          details = body.detail;
+        }
+      } catch {
+        // Body was not JSON or did not have detail property
+      }
+
+      throw new ApiError(response.status, message, details);
+    }
+
+    return response.json();
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    if (err.name === "AbortError") {
+      throw new ApiError(
+        408,
+        "La solicitud ha superado el límite de tiempo de espera (10s).",
+      );
+    }
+    throw err;
   }
-
-  return response.json()
 }
 
 // Health Check
@@ -44,51 +79,53 @@ export async function checkHealth(): Promise<HealthStatus> {
     const response = await fetch(`${API_BASE_URL}/health`, {
       method: "GET",
       signal: AbortSignal.timeout(5000),
-    })
+    });
     if (response.ok) {
-      return { status: "healthy", timestamp: new Date().toISOString() }
+      return { status: "healthy", timestamp: new Date().toISOString() };
     }
-    return { status: "unhealthy", timestamp: new Date().toISOString() }
+    return { status: "unhealthy", timestamp: new Date().toISOString() };
   } catch {
-    return { status: "unhealthy", timestamp: new Date().toISOString() }
+    return { status: "unhealthy", timestamp: new Date().toISOString() };
   }
 }
 
 // Prediction
 export async function createPrediction(
-  input: PredictionInput
+  input: PredictionInput,
 ): Promise<PredictionResult> {
   return fetchApi<PredictionResult>("/predecir", {
     method: "POST",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 // Metrics
 export async function getMetrics(): Promise<MetricEntry[]> {
-  return fetchApi<MetricEntry[]>("/metricas")
+  return fetchApi<MetricEntry[]>("/metricas");
 }
 
 // History
 export async function getHistory(
   page: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
 ): Promise<HistoryResponse> {
   return fetchApi<HistoryResponse>(
-    `/historial?page=${page}&per_page=${perPage}`
-  )
+    `/historial?page=${page}&per_page=${perPage}`,
+  );
 }
 
 // Config
 export async function getConfig(): Promise<AppConfig> {
-  return fetchApi<AppConfig>("/config")
+  return fetchApi<AppConfig>("/config");
 }
 
-export async function updateConfig(config: Partial<AppConfig>): Promise<AppConfig> {
+export async function updateConfig(
+  config: Partial<AppConfig>,
+): Promise<AppConfig> {
   return fetchApi<AppConfig>("/config", {
     method: "PUT",
     body: JSON.stringify(config),
-  })
+  });
 }
 
 // Mock Data for development
@@ -101,7 +138,7 @@ export const mockPredictionResult: PredictionResult = {
   pred_risk: "MEDIO",
   probas: { ALTO: 18.5, MEDIO: 63.2, BAJO: 18.3 },
   created_at: "2025-07-14T10:32:00",
-}
+};
 
 export const mockMetrics: MetricEntry[] = [
   {
@@ -172,11 +209,11 @@ export const mockMetrics: MetricEntry[] = [
     tasks_mae: 0.98,
     tasks_r2: 0.94,
     time_mae: 1.48,
-    time_r2: 0.90,
+    time_r2: 0.9,
     risk_accuracy: 0.96,
     risk_f1: 0.95,
   },
-]
+];
 
 export const mockConfig: AppConfig = {
   rendimiento_min: 0,
@@ -191,7 +228,7 @@ export const mockConfig: AppConfig = {
   ganador_tasks: "XGBoost",
   ganador_time: "GradientBoosting",
   ganador_risk: "XGBoost",
-}
+};
 
 export const mockHistoryResponse: HistoryResponse = {
   items: [
@@ -285,4 +322,4 @@ export const mockHistoryResponse: HistoryResponse = {
   page: 1,
   per_page: 10,
   total_pages: 3,
-}
+};

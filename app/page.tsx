@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { PageHeader } from "@/components/page-header"
-import { PredictionForm } from "@/components/prediction-form"
-import { PredictionResults } from "@/components/prediction-results"
-import type { PredictionResult } from "@/lib/types"
+import { useState } from "react";
+import { PageHeader } from "@/components/page-header";
+import { PredictionForm } from "@/components/prediction-form";
+import { PredictionResults } from "@/components/prediction-results";
+import type { PredictionResult } from "@/lib/types";
 
 export default function PrediccionPage() {
-  const [result, setResult] = useState<PredictionResult | null>(null)
+  const [result, setResult] = useState<PredictionResult | null>(null);
 
   return (
     <>
@@ -20,5 +20,5 @@ export default function PrediccionPage() {
         {result && <PredictionResults result={result} />}
       </div>
     </>
-  )
+  );
 }
