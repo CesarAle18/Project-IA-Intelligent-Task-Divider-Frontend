@@ -276,40 +276,32 @@ export default function HistorialPage() {
           open={!!selectedEntry}
           onOpenChange={() => setSelectedEntry(null)}
         >
-          <SheetContent className="sm:max-w-md overflow-y-auto border-l border-border/80 glass shadow-2xl animate-fade-in p-6">
-            <SheetHeader className="mb-6 relative">
-              <div className="flex items-center justify-between pb-3 border-b border-border/50">
-                <SheetTitle className="text-lg font-bold tracking-tight bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">
-                  Detalle de Estimación
-                </SheetTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSelectedEntry(null)}
-                  className="h-8 w-8 rounded-full hover:bg-muted/65"
-                >
-                  <X className="w-4.5 h-4.5" />
-                </Button>
-              </div>
+          <SheetContent className="sm:max-w-md overflow-y-auto border-l border-border/60 bg-background/95 backdrop-blur-xl shadow-2xl p-6 text-foreground animate-fade-in">
+            {/* Header Section */}
+            <SheetHeader className="mb-6 pb-4 border-b border-border/40">
+              <SheetTitle className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary via-indigo-500 to-indigo-600 bg-clip-text text-transparent">
+                Detalle de Estimación
+              </SheetTitle>
             </SheetHeader>
 
             {selectedEntry && (
               <div className="space-y-6 animate-slide-up">
                 {/* ID and Date Indicator */}
-                <div className="flex justify-between items-center bg-muted/40 border border-border/50 rounded-xl p-3.5">
-                  <div className="flex flex-col">
+                <div className="flex justify-between items-center bg-muted/60 border border-border/50 rounded-2xl p-4 shadow-xs">
+                  <div className="flex flex-col gap-0.5">
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                       Identificador
                     </span>
-                    <span className="text-sm font-mono font-bold text-foreground">
+                    <span className="text-sm font-semibold text-foreground">
                       Registro #{selectedEntry.id}
                     </span>
                   </div>
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end gap-0.5">
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
-                      <Calendar className="w-3 h-3" /> Fecha
+                      <Calendar className="w-3 h-3 text-muted-foreground/80" />{" "}
+                      Fecha
                     </span>
-                    <span className="text-xs font-semibold text-foreground">
+                    <span className="text-xs font-semibold text-foreground/90">
                       {formatDate(selectedEntry.created_at)}
                     </span>
                   </div>
@@ -317,10 +309,11 @@ export default function HistorialPage() {
 
                 {/* Input Parameters */}
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider pl-1 flex items-center gap-1.5">
-                    <Settings className="w-4 h-4" /> Parámetros de Entrada
+                  <h3 className="text-xs font-bold text-muted-foreground/90 uppercase tracking-wider pl-1 flex items-center gap-2">
+                    <Settings className="w-4 h-4 text-muted-foreground/70" />{" "}
+                    Parámetros de Entrada
                   </h3>
-                  <div className="bg-muted/30 border border-border/40 rounded-xl p-4 space-y-1">
+                  <div className="bg-muted/40 border border-border/40 rounded-2xl p-4 space-y-1.5 shadow-xs">
                     <DetailRow
                       label="Story Points (SP)"
                       value={selectedEntry.sp}
@@ -360,68 +353,68 @@ export default function HistorialPage() {
 
                 {/* Predictions */}
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider pl-1 flex items-center gap-1.5">
+                  <h3 className="text-xs font-bold text-muted-foreground/90 uppercase tracking-wider pl-1 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-primary" /> Resultados
                     Estimados (IA)
                   </h3>
                   <div className="space-y-4">
                     {/* Tasks card */}
-                    <Card className="border border-border/50 bg-background/50 hover:bg-background/80 transition-colors shadow-xs">
+                    <Card className="border border-border/60 bg-card/90 shadow-md hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden">
                       <CardContent className="p-4 flex flex-col justify-between">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                             Sub-tareas sugeridas
                           </span>
-                          <span className="text-xl font-extrabold text-primary">
+                          <span className="text-xl font-black text-primary tracking-tight">
                             {selectedEntry.pred_tasks} tareas
                           </span>
                         </div>
-                        <div className="mt-2.5 pt-2 border-t border-dashed border-border/60">
-                          <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider block">
+                        <div className="mt-3 pt-3 border-t border-dashed border-border/80">
+                          <span className="text-[10px] text-muted-foreground/80 font-bold uppercase tracking-wider block">
                             Intervalo de confianza (90%)
                           </span>
-                          <span className="text-xs font-bold text-foreground font-mono mt-0.5 block">
-                            [{selectedEntry.ci_tasks?.[0] ?? 0} a{" "}
-                            {selectedEntry.ci_tasks?.[1] ?? 0}] sub-tareas
+                          <span className="text-xs font-semibold text-foreground/90 mt-1 block">
+                            {selectedEntry.ci_tasks?.[0] ?? 0} a{" "}
+                            {selectedEntry.ci_tasks?.[1] ?? 0} sub-tareas
                           </span>
                         </div>
                       </CardContent>
                     </Card>
 
                     {/* Time card */}
-                    <Card className="border border-border/50 bg-background/50 hover:bg-background/80 transition-colors shadow-xs">
+                    <Card className="border border-border/60 bg-card/90 shadow-md hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden">
                       <CardContent className="p-4 flex flex-col justify-between">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                             Tiempo Requerido
                           </span>
-                          <span className="text-xl font-extrabold text-indigo-600 dark:text-indigo-400">
+                          <span className="text-xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight">
                             {selectedEntry.pred_time} días hábiles
                           </span>
                         </div>
-                        <div className="mt-2.5 pt-2 border-t border-dashed border-border/60">
-                          <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider block">
+                        <div className="mt-3 pt-3 border-t border-dashed border-border/80">
+                          <span className="text-[10px] text-muted-foreground/80 font-bold uppercase tracking-wider block">
                             Intervalo de confianza (90%)
                           </span>
-                          <span className="text-xs font-bold text-foreground font-mono mt-0.5 block">
-                            [{selectedEntry.ci_time?.[0] ?? 0} a{" "}
-                            {selectedEntry.ci_time?.[1] ?? 0}] días
+                          <span className="text-xs font-semibold text-foreground/90 mt-1 block">
+                            {selectedEntry.ci_time?.[0] ?? 0} a{" "}
+                            {selectedEntry.ci_time?.[1] ?? 0} días
                           </span>
                         </div>
                       </CardContent>
                     </Card>
 
                     {/* Risk card */}
-                    <Card className="border border-border/50 bg-background/50 hover:bg-background/80 transition-colors shadow-xs">
-                      <CardContent className="p-4 space-y-3">
-                        <div className="flex items-center justify-between">
+                    <Card className="border border-border/60 bg-card/90 shadow-md hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden">
+                      <CardContent className="p-4 space-y-4">
+                        <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                             Riesgo Proyectado
                           </span>
                           <RiskBadge level={selectedEntry.pred_risk} />
                         </div>
-                        <div className="border-t border-dashed border-border/60 pt-3">
-                          <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider block mb-2">
+                        <div className="border-t border-dashed border-border/80 pt-3">
+                          <span className="text-[10px] text-muted-foreground/80 font-bold uppercase tracking-wider block mb-2.5">
                             Distribución de Probabilidades
                           </span>
                           <RiskProbabilityBar
