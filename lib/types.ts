@@ -31,16 +31,23 @@ export interface PredictionResult {
 
 // Metrics Types
 export interface MetricEntry {
-  timestamp: string;
+  id: number;
+  created_at: string;
   ganador_tasks: string;
   ganador_time: string;
   ganador_risk: string;
   tasks_mae: number;
+  tasks_rmse: number;
+  tasks_mape: number;
   tasks_r2: number;
   time_mae: number;
+  time_rmse: number;
+  time_mape: number;
   time_r2: number;
   risk_accuracy: number;
   risk_f1: number;
+  risk_precision: number;
+  risk_recall: number;
 }
 
 // History Types

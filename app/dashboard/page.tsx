@@ -234,7 +234,7 @@ export default function DashboardPage() {
 
   const chartData = metrics?.map((m) => ({
     ...m,
-    date: new Date(m.timestamp).toLocaleDateString("es-ES", {
+    date: new Date(m.created_at).toLocaleDateString("es-ES", {
       month: "short",
       day: "numeric",
     }),
@@ -266,7 +266,6 @@ export default function DashboardPage() {
                 label="Tasks R²"
                 value={latestMetric!.tasks_r2}
                 previousValue={previousMetric?.tasks_r2}
-                format="percent"
                 icon={Gauge}
                 className="stagger-2"
               />
@@ -482,7 +481,7 @@ export default function DashboardPage() {
                         }}
                       />
                       <YAxis
-                        domain={[0, 1]}
+                        domain={['auto', 'auto']}
                         className="text-xs"
                         tick={{
                           fontSize: 10,
