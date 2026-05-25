@@ -26,6 +26,7 @@ export interface PredictionResult {
     MEDIO: number;
     BAJO: number;
   };
+  risk_confidence?: number; // Confianza de calibración isotónica de la predicción de riesgo (0.0 a 1.0)
   created_at: string;
 }
 
@@ -71,18 +72,37 @@ export interface HistoryResponse {
 
 // Config Types
 export interface AppConfig {
-  rendimiento_min: number;
-  rendimiento_max: number;
-  experiencia_valida: number[];
-  urgencia_valida: string[];
-  outlier_columns: string[];
+  columnas_requeridas: string[];
+  columnas_numericas: string[];
+  columnas_categoricas: string[];
+  columnas_outlier_iqr: string[];
+  tipos_esperados: Record<string, string>;
+  rangos_validos: Record<string, any>;
+  riesgo_label: Record<string, string>;
+  rf_params: Record<string, any[]>;
+  gb_params: Record<string, any[]>;
   kfold_splits: number;
   random_state: number;
   test_size: number;
   n_iter_search: number;
-  ganador_tasks: string;
-  ganador_time: string;
-  ganador_risk: string;
+}
+
+// Model Validation Info Types
+export interface ModelValidation {
+  timestamp: string;
+  version: string;
+  ganadores: string[];
+  features: string[];
+  hiperparametros_optimos: {
+    tasks: Record<string, any>;
+    time: Record<string, any>;
+    risk: Record<string, any>;
+  };
+  diagnostico_entrenamiento: {
+    leakage_warnings: string[];
+    kfold_splits: number;
+    calibracion_riesgo: string;
+  };
 }
 
 // Health Check
