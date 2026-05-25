@@ -270,58 +270,101 @@ export const mockMetrics: MetricEntry[] = [
 ];
 
 export const mockConfig: AppConfig = {
-  columnas_requeridas: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias", "TipoTarea", "Urgencia", "y_tasks", "y_time", "y_risk"],
-  columnas_numericas: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias"],
+  columnas_requeridas: [
+    "SP",
+    "Experiencia",
+    "Rendimiento",
+    "Complejidad",
+    "Dependencias",
+    "TipoTarea",
+    "Urgencia",
+    "y_tasks",
+    "y_time",
+    "y_risk",
+  ],
+  columnas_numericas: [
+    "SP",
+    "Experiencia",
+    "Rendimiento",
+    "Complejidad",
+    "Dependencias",
+  ],
   columnas_categoricas: ["TipoTarea", "Urgencia"],
   columnas_outlier_iqr: ["SP", "Complejidad", "Dependencias"],
   tipos_esperados: {
-    SP: "numeric", Experiencia: "numeric", Rendimiento: "numeric", Complejidad: "numeric", Dependencias: "numeric",
-    TipoTarea: "string", Urgencia: "string", y_tasks: "numeric", y_time: "numeric", y_risk: "numeric"
+    SP: "numeric",
+    Experiencia: "numeric",
+    Rendimiento: "numeric",
+    Complejidad: "numeric",
+    Dependencias: "numeric",
+    TipoTarea: "string",
+    Urgencia: "string",
+    y_tasks: "numeric",
+    y_time: "numeric",
+    y_risk: "numeric",
   },
   rangos_validos: {
     Rendimiento: [0.0, 1.0],
     Experiencia: [1, 2, 3],
     Urgencia: ["Baja", "Media", "Alta"],
-    y_risk: [0, 1, 2]
+    y_risk: [0, 1, 2],
   },
   riesgo_label: {
     "0": "ALTO",
     "1": "MEDIO",
-    "2": "BAJO"
+    "2": "BAJO",
   },
   rf_params: {
-    "model__n_estimators": [50, 100, 200, 300],
-    "model__max_depth": [null, 5, 10, 15, 20]
+    model__n_estimators: [50, 100, 200, 300],
+    model__max_depth: [null, 5, 10, 15, 20],
   },
   gb_params: {
-    "model__n_estimators": [50, 100, 200],
-    "model__max_depth": [3, 4, 5, 6]
+    model__n_estimators: [50, 100, 200],
+    model__max_depth: [3, 4, 5, 6],
   },
   kfold_splits: 5,
   random_state: 42,
   test_size: 0.2,
-  n_iter_search: 20
+  n_iter_search: 20,
 };
 
 export const mockModelValidation: ModelValidation = {
   timestamp: "2026-05-24 20:09:59",
   version: "3.1-production",
   ganadores: ["GradientBoosting", "GradientBoosting", "LogisticRegression"],
-  features: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias", "TipoTarea", "Urgencia"],
+  features: [
+    "SP",
+    "Experiencia",
+    "Rendimiento",
+    "Complejidad",
+    "Dependencias",
+    "TipoTarea",
+    "Urgencia",
+  ],
   hiperparametros_optimos: {
-    tasks: { "model__subsample": 0.7, "model__n_estimators": 200, "model__max_depth": 4, "model__learning_rate": 0.05 },
-    time: { "model__subsample": 0.8, "model__n_estimators": 50, "model__max_depth": 4, "model__learning_rate": 0.1 },
-    risk: {}
+    tasks: {
+      model__subsample: 0.7,
+      model__n_estimators: 200,
+      model__max_depth: 4,
+      model__learning_rate: 0.05,
+    },
+    time: {
+      model__subsample: 0.8,
+      model__n_estimators: 50,
+      model__max_depth: 4,
+      model__learning_rate: 0.1,
+    },
+    risk: {},
   },
   diagnostico_entrenamiento: {
     leakage_warnings: [
       "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_tasks'.",
       "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_time'.",
-      "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_risk'."
+      "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_risk'.",
     ],
     kfold_splits: 5,
-    calibracion_riesgo: "isotonic_cv5"
-  }
+    calibracion_riesgo: "isotonic_cv5",
+  },
 };
 
 export const mockHistoryResponse: HistoryResponse = {
@@ -359,7 +402,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [15, 22],
       pred_risk: "ALTO",
       probas: { ALTO: 70, MEDIO: 20, BAJO: 10 },
-      risk_confidence: 0.70,
+      risk_confidence: 0.7,
       created_at: "2025-07-13T14:20:00",
     },
     {
@@ -377,7 +420,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [4, 7],
       pred_risk: "BAJO",
       probas: { ALTO: 5, MEDIO: 15, BAJO: 80 },
-      risk_confidence: 0.80,
+      risk_confidence: 0.8,
       created_at: "2025-07-12T09:15:00",
     },
     {

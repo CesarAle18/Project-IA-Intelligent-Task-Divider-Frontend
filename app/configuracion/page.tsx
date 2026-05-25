@@ -29,12 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -79,15 +74,19 @@ export default function ConfiguracionPage() {
   const { isOffline } = useApiStatus();
 
   // SWR data fetching
-  const { data: config, mutate: mutateConfig } = useSWR("api-config", fetchConfig, {
-    revalidateOnFocus: false,
-  });
+  const { data: config, mutate: mutateConfig } = useSWR(
+    "api-config",
+    fetchConfig,
+    {
+      revalidateOnFocus: false,
+    },
+  );
   const { data: validation, mutate: mutateValidation } = useSWR(
     "api-validation",
     fetchValidation,
     {
       revalidateOnFocus: false,
-    }
+    },
   );
 
   // Form states
@@ -99,7 +98,9 @@ export default function ConfiguracionPage() {
   // Action states
   const [isSaving, setIsSaving] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
-  const [shapModel, setShapModel] = useState<"tasks" | "time" | "risk">("tasks");
+  const [shapModel, setShapModel] = useState<"tasks" | "time" | "risk">(
+    "tasks",
+  );
 
   // Image load error states
   const [dashboardError, setDashboardError] = useState(false);
@@ -120,7 +121,9 @@ export default function ConfiguracionPage() {
   const handleSaveConfig = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isOffline) {
-      toast.warning("Modo Demo Activo. Los cambios no se guardarán en el servidor.");
+      toast.warning(
+        "Modo Demo Activo. Los cambios no se guardarán en el servidor.",
+      );
       return;
     }
     setIsSaving(true);
@@ -150,7 +153,9 @@ export default function ConfiguracionPage() {
       const result = await reloadModels();
       mutateValidation();
       mutateConfig();
-      toast.success(result.message || "¡Modelos recargados en caliente correctamente!");
+      toast.success(
+        result.message || "¡Modelos recargados en caliente correctamente!",
+      );
     } catch (err: any) {
       toast.error(err.message || "Error al recargar modelos.");
     } finally {
@@ -198,7 +203,8 @@ export default function ConfiguracionPage() {
                     Hiperparámetros de Validación cruzada
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    Parámetros de entrenamiento aplicados en la optimización con RandomizedSearchCV y K-Fold.
+                    Parámetros de entrenamiento aplicados en la optimización con
+                    RandomizedSearchCV y K-Fold.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -206,7 +212,10 @@ export default function ConfiguracionPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       {/* Splits */}
                       <div className="space-y-1.5">
-                        <Label htmlFor="splits" className="font-semibold text-sm">
+                        <Label
+                          htmlFor="splits"
+                          className="font-semibold text-sm"
+                        >
                           K-Fold Splits
                         </Label>
                         <Input
@@ -215,7 +224,9 @@ export default function ConfiguracionPage() {
                           min={2}
                           max={20}
                           value={kfoldSplits}
-                          onChange={(e) => setKfoldSplits(Number(e.target.value))}
+                          onChange={(e) =>
+                            setKfoldSplits(Number(e.target.value))
+                          }
                           className="bg-background/50"
                         />
                         <p className="text-[10px] text-muted-foreground">
@@ -232,7 +243,9 @@ export default function ConfiguracionPage() {
                           id="seed"
                           type="number"
                           value={randomState}
-                          onChange={(e) => setRandomState(Number(e.target.value))}
+                          onChange={(e) =>
+                            setRandomState(Number(e.target.value))
+                          }
                           className="bg-background/50"
                         />
                         <p className="text-[10px] text-muted-foreground">
@@ -242,7 +255,10 @@ export default function ConfiguracionPage() {
 
                       {/* Test Size */}
                       <div className="space-y-1.5">
-                        <Label htmlFor="test-size" className="font-semibold text-sm">
+                        <Label
+                          htmlFor="test-size"
+                          className="font-semibold text-sm"
+                        >
                           Test Size (Set de Test)
                         </Label>
                         <Input
@@ -256,13 +272,17 @@ export default function ConfiguracionPage() {
                           className="bg-background/50"
                         />
                         <p className="text-[10px] text-muted-foreground">
-                          Porcentaje de datos reservados para validación final (ej: 0.20 = 20%).
+                          Porcentaje de datos reservados para validación final
+                          (ej: 0.20 = 20%).
                         </p>
                       </div>
 
                       {/* Iter search */}
                       <div className="space-y-1.5">
-                        <Label htmlFor="iter-search" className="font-semibold text-sm">
+                        <Label
+                          htmlFor="iter-search"
+                          className="font-semibold text-sm"
+                        >
                           Iteraciones de Búsqueda
                         </Label>
                         <Input
@@ -271,11 +291,14 @@ export default function ConfiguracionPage() {
                           min={5}
                           max={200}
                           value={nIterSearch}
-                          onChange={(e) => setNIterSearch(Number(e.target.value))}
+                          onChange={(e) =>
+                            setNIterSearch(Number(e.target.value))
+                          }
                           className="bg-background/50"
                         />
                         <p className="text-[10px] text-muted-foreground">
-                          Cantidad de combinaciones aleatorias probadas en el tuning.
+                          Cantidad de combinaciones aleatorias probadas en el
+                          tuning.
                         </p>
                       </div>
                     </div>
@@ -287,7 +310,9 @@ export default function ConfiguracionPage() {
                       disabled={isSaving}
                       className="w-full sm:w-auto px-6 py-2.5 font-semibold text-sm rounded-xl cursor-pointer shadow-md shadow-primary/10 hover:shadow-primary/20 active:scale-[0.98] transition-all"
                     >
-                      {isSaving && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
+                      {isSaving && (
+                        <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                      )}
                       Guardar Ajustes
                     </Button>
                   </form>
@@ -304,12 +329,27 @@ export default function ConfiguracionPage() {
                       Recarga en Caliente
                     </CardTitle>
                     <CardDescription className="text-xs">
-                      ¿Has entrenado nuevos modelos localmente? Carga los archivos pickle (.pkl) directamente a la API en caliente.
+                      ¿Has entrenado nuevos modelos localmente? Carga los
+                      archivos pickle (.pkl) directamente a la API en caliente.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-xs text-muted-foreground leading-normal">
-                      Esta operación forzará a la API a recargar en memoria los modelos <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">pipe_tasks.pkl</code>, <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">pipe_time.pkl</code> y <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">pipe_risk.pkl</code> y sus metadatos sin necesidad de reiniciar la API de producción.
+                      Esta operación forzará a la API a recargar en memoria los
+                      modelos{" "}
+                      <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">
+                        pipe_tasks.pkl
+                      </code>
+                      ,{" "}
+                      <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">
+                        pipe_time.pkl
+                      </code>{" "}
+                      y{" "}
+                      <code className="bg-muted px-1 py-0.5 rounded font-mono text-[10px] text-foreground">
+                        pipe_risk.pkl
+                      </code>{" "}
+                      y sus metadatos sin necesidad de reiniciar la API de
+                      producción.
                     </p>
                     <Button
                       variant="outline"
@@ -317,8 +357,12 @@ export default function ConfiguracionPage() {
                       disabled={isReloading}
                       className="w-full py-4.5 font-semibold text-sm border-indigo-500/25 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10 cursor-pointer transition-colors"
                     >
-                      <HardDriveDownload className={`mr-2 h-4.5 w-4.5 ${isReloading ? "animate-bounce" : ""}`} />
-                      {isReloading ? "Recargando Modelos..." : "Recargar Modelos"}
+                      <HardDriveDownload
+                        className={`mr-2 h-4.5 w-4.5 ${isReloading ? "animate-bounce" : ""}`}
+                      />
+                      {isReloading
+                        ? "Recargando Modelos..."
+                        : "Recargar Modelos"}
                     </Button>
                   </CardContent>
                 </Card>
@@ -327,31 +371,51 @@ export default function ConfiguracionPage() {
                 <Card className="glass-premium shadow-xl border-border/80">
                   <CardContent className="p-5 space-y-3.5">
                     <div className="flex justify-between items-center pb-2 border-b border-border/40">
-                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Metadatos API</span>
-                      <Badge variant="outline" className="text-[10px] px-2 py-0">
-                        v{validation?.version || config?.kfold_splits ? "3.1" : "Demo"}
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                        Metadatos API
+                      </span>
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] px-2 py-0"
+                      >
+                        v
+                        {validation?.version || config?.kfold_splits
+                          ? "3.1"
+                          : "Demo"}
                       </Badge>
                     </div>
                     <div className="space-y-2 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Último entrenamiento:</span>
+                        <span className="text-muted-foreground">
+                          Último entrenamiento:
+                        </span>
                         <span className="font-semibold font-mono text-foreground/80">
-                          {validation?.timestamp ? new Date(validation.timestamp).toLocaleDateString("es-ES", {
-                            day: "2-digit",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }) : "N/A"}
+                          {validation?.timestamp
+                            ? new Date(validation.timestamp).toLocaleDateString(
+                                "es-ES",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                },
+                              )
+                            : "N/A"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Calibración de Riesgo:</span>
+                        <span className="text-muted-foreground">
+                          Calibración de Riesgo:
+                        </span>
                         <span className="font-semibold text-foreground/80">
-                          {validation?.diagnostico_entrenamiento?.calibracion_riesgo || "Isotónica (cv=5)"}
+                          {validation?.diagnostico_entrenamiento
+                            ?.calibracion_riesgo || "Isotónica (cv=5)"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Características Activas:</span>
+                        <span className="text-muted-foreground">
+                          Características Activas:
+                        </span>
                         <span className="font-semibold font-mono text-foreground/80">
                           {validation?.features?.length ?? 7} features
                         </span>
@@ -374,38 +438,55 @@ export default function ConfiguracionPage() {
                     Análisis de Data Leakage (Fuga de Datos)
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    El sistema analiza correlaciones lineales (Pearson) e información mutua (relaciones no lineales) antes de entrenar para evitar sobreajuste artificial.
+                    El sistema analiza correlaciones lineales (Pearson) e
+                    información mutua (relaciones no lineales) antes de entrenar
+                    para evitar sobreajuste artificial.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {validation?.diagnostico_entrenamiento?.leakage_warnings &&
-                  validation.diagnostico_entrenamiento.leakage_warnings.length > 0 ? (
+                  validation.diagnostico_entrenamiento.leakage_warnings.length >
+                    0 ? (
                     <div className="space-y-4">
                       <div className="flex items-start gap-3 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 p-4 rounded-xl">
                         <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5 text-amber-500" />
                         <div className="space-y-1">
-                          <h4 className="text-sm font-bold">Sospechas de Leakage Detectadas</h4>
+                          <h4 className="text-sm font-bold">
+                            Sospechas de Leakage Detectadas
+                          </h4>
                           <p className="text-xs text-muted-foreground leading-normal">
-                            Se detectaron variables que comparten un porcentaje excesivo de información con los targets. Esto puede deberse a que el Story Point (SP) actúa como predictor directo en el generador de datos.
+                            Se detectaron variables que comparten un porcentaje
+                            excesivo de información con los targets. Esto puede
+                            deberse a que el Story Point (SP) actúa como
+                            predictor directo en el generador de datos.
                           </p>
                         </div>
                       </div>
                       <div className="bg-muted/30 border border-border/40 rounded-xl p-4 space-y-2">
-                        {validation.diagnostico_entrenamiento.leakage_warnings.map((warn, i) => (
-                          <div key={i} className="flex gap-2 text-xs font-mono items-center text-foreground/80 py-1 border-b border-border/20 last:border-b-0">
-                            <ChevronRight className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                            {warn}
-                          </div>
-                        ))}
+                        {validation.diagnostico_entrenamiento.leakage_warnings.map(
+                          (warn, i) => (
+                            <div
+                              key={i}
+                              className="flex gap-2 text-xs font-mono items-center text-foreground/80 py-1 border-b border-border/20 last:border-b-0"
+                            >
+                              <ChevronRight className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                              {warn}
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
                   ) : (
                     <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 p-4 rounded-xl">
                       <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-500" />
                       <div className="space-y-0.5">
-                        <h4 className="text-sm font-bold">Modelo Libre de Leakage Crítico</h4>
+                        <h4 className="text-sm font-bold">
+                          Modelo Libre de Leakage Crítico
+                        </h4>
                         <p className="text-xs text-muted-foreground">
-                          No se detectaron correlaciones perfectas ni dependencias directas. Las métricas de entrenamiento son estadísticamente confiables.
+                          No se detectaron correlaciones perfectas ni
+                          dependencias directas. Las métricas de entrenamiento
+                          son estadísticamente confiables.
                         </p>
                       </div>
                     </div>
@@ -428,7 +509,10 @@ export default function ConfiguracionPage() {
                         <Sparkles className="w-3.5 h-3.5 text-muted-foreground/80" />
                         Sub-tareas:
                       </span>
-                      <Badge variant="secondary" className="font-semibold text-[10px]">
+                      <Badge
+                        variant="secondary"
+                        className="font-semibold text-[10px]"
+                      >
                         {validation?.ganadores?.[0] || "GradientBoosting"}
                       </Badge>
                     </div>
@@ -437,7 +521,10 @@ export default function ConfiguracionPage() {
                         <Clock className="w-3.5 h-3.5 text-muted-foreground/80" />
                         Tiempo:
                       </span>
-                      <Badge variant="secondary" className="font-semibold text-[10px]">
+                      <Badge
+                        variant="secondary"
+                        className="font-semibold text-[10px]"
+                      >
                         {validation?.ganadores?.[1] || "GradientBoosting"}
                       </Badge>
                     </div>
@@ -446,7 +533,10 @@ export default function ConfiguracionPage() {
                         <ShieldAlert className="w-3.5 h-3.5 text-muted-foreground/80" />
                         Riesgo:
                       </span>
-                      <Badge variant="secondary" className="font-semibold text-[10px]">
+                      <Badge
+                        variant="secondary"
+                        className="font-semibold text-[10px]"
+                      >
                         {validation?.ganadores?.[2] || "LogisticRegression"}
                       </Badge>
                     </div>
@@ -460,7 +550,9 @@ export default function ConfiguracionPage() {
                       Validación Cruzada
                     </h5>
                     <p className="text-[10px] text-muted-foreground leading-normal">
-                      Los ganadores se seleccionan comparando K-Fold cross validation y validación por TimeSeriesSplit (orden secuencial de filas).
+                      Los ganadores se seleccionan comparando K-Fold cross
+                      validation y validación por TimeSeriesSplit (orden
+                      secuencial de filas).
                     </p>
                   </div>
                 </CardContent>
@@ -476,7 +568,8 @@ export default function ConfiguracionPage() {
                         Panel de Curvas y Diagnóstico
                       </CardTitle>
                       <CardDescription className="text-xs">
-                        Graficado de curvas de aprendizaje (overfitting check), calibración de riesgo e importancias de variables.
+                        Graficado de curvas de aprendizaje (overfitting check),
+                        calibración de riesgo e importancias de variables.
                       </CardDescription>
                     </div>
                   </div>
@@ -485,17 +578,32 @@ export default function ConfiguracionPage() {
                   {isOffline ? (
                     <div className="flex flex-col items-center justify-center p-8 border border-dashed border-border/80 rounded-2xl bg-muted/20 text-muted-foreground min-h-[350px]">
                       <AlertTriangle className="w-12 h-12 text-amber-500 mb-3 animate-pulse" />
-                      <h4 className="text-md font-bold text-foreground mb-1">Visualización no disponible en Modo Demo</h4>
+                      <h4 className="text-md font-bold text-foreground mb-1">
+                        Visualización no disponible en Modo Demo
+                      </h4>
                       <p className="text-xs max-w-sm text-center">
-                        El backend de FastAPI está desconectado. Levanta la API local para cargar y renderizar en vivo el panel <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">evaluacion_modelo_diagnostico.png</code>.
+                        El backend de FastAPI está desconectado. Levanta la API
+                        local para cargar y renderizar en vivo el panel{" "}
+                        <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">
+                          evaluacion_modelo_diagnostico.png
+                        </code>
+                        .
                       </p>
                     </div>
                   ) : dashboardError ? (
                     <div className="flex flex-col items-center justify-center p-8 border border-dashed border-border/80 rounded-2xl bg-muted/20 text-muted-foreground min-h-[350px]">
                       <Info className="w-12 h-12 text-muted-foreground mb-3" />
-                      <h4 className="text-md font-bold text-foreground mb-1">No se encontró el panel de diagnóstico</h4>
+                      <h4 className="text-md font-bold text-foreground mb-1">
+                        No se encontró el panel de diagnóstico
+                      </h4>
                       <p className="text-xs max-w-sm text-center">
-                        La API está en línea pero no se encuentra la imagen en disco. Asegúrate de ejecutar el script de entrenamiento para generarla (<code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">python scripts/train_model.py</code>).
+                        La API está en línea pero no se encuentra la imagen en
+                        disco. Asegúrate de ejecutar el script de entrenamiento
+                        para generarla (
+                        <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">
+                          python scripts/train_model.py
+                        </code>
+                        ).
                       </p>
                     </div>
                   ) : (
@@ -525,24 +633,38 @@ export default function ConfiguracionPage() {
                     Interpretabilidad de Inteligencia Artificial (SHAP)
                   </CardTitle>
                   <CardDescription className="text-xs">
-                    Explicabilidad matemática de la contribución individual de cada característica en las predicciones.
+                    Explicabilidad matemática de la contribución individual de
+                    cada característica en las predicciones.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 text-xs text-muted-foreground leading-normal">
                   <p>
-                    <strong>SHAP (Shapley Additive exPlanations)</strong> utiliza la teoría de juegos cooperativa para calcular el impacto de cada parámetro (ej: Story Points, Rendimiento o Experiencia) en las predicciones de sub-tareas, tiempo y riesgo.
+                    <strong>SHAP (Shapley Additive exPlanations)</strong>{" "}
+                    utiliza la teoría de juegos cooperativa para calcular el
+                    impacto de cada parámetro (ej: Story Points, Rendimiento o
+                    Experiencia) en las predicciones de sub-tareas, tiempo y
+                    riesgo.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div className="border border-border/30 bg-muted/10 p-3.5 rounded-xl">
-                      <h5 className="font-bold text-foreground mb-1">1. Gráfico de Barras (|SHAP|)</h5>
+                      <h5 className="font-bold text-foreground mb-1">
+                        1. Gráfico de Barras (|SHAP|)
+                      </h5>
                       <p className="text-[11px]">
-                        Indica el orden de importancia global. Cuanto más larga sea la barra, mayor influencia general tiene la característica sobre las estimaciones del modelo.
+                        Indica el orden de importancia global. Cuanto más larga
+                        sea la barra, mayor influencia general tiene la
+                        característica sobre las estimaciones del modelo.
                       </p>
                     </div>
                     <div className="border border-border/30 bg-muted/10 p-3.5 rounded-xl">
-                      <h5 className="font-bold text-foreground mb-1">2. Gráfico Beeswarm (Nube de Puntos)</h5>
+                      <h5 className="font-bold text-foreground mb-1">
+                        2. Gráfico Beeswarm (Nube de Puntos)
+                      </h5>
                       <p className="text-[11px]">
-                        Muestra la direccionalidad: los puntos azules indican valores bajos y los rojos valores altos. Su posición horizontal indica si empujan la predicción hacia arriba o hacia abajo.
+                        Muestra la direccionalidad: los puntos azules indican
+                        valores bajos y los rojos valores altos. Su posición
+                        horizontal indica si empujan la predicción hacia arriba
+                        o hacia abajo.
                       </p>
                     </div>
                   </div>
@@ -558,7 +680,8 @@ export default function ConfiguracionPage() {
                       Análisis por Modelo Predictivo
                     </CardTitle>
                     <CardDescription className="text-xs">
-                      Selecciona un modelo para cargar sus respectivos gráficos de interpretabilidad SHAP.
+                      Selecciona un modelo para cargar sus respectivos gráficos
+                      de interpretabilidad SHAP.
                     </CardDescription>
                   </div>
 
@@ -568,7 +691,9 @@ export default function ConfiguracionPage() {
                       size="sm"
                       onClick={() => setShapModel("tasks")}
                       className={`text-xs px-3.5 h-8.5 rounded-lg font-semibold cursor-pointer ${
-                        shapModel === "tasks" ? "bg-background shadow-xs text-primary" : ""
+                        shapModel === "tasks"
+                          ? "bg-background shadow-xs text-primary"
+                          : ""
                       }`}
                     >
                       Sub-tareas
@@ -578,7 +703,9 @@ export default function ConfiguracionPage() {
                       size="sm"
                       onClick={() => setShapModel("time")}
                       className={`text-xs px-3.5 h-8.5 rounded-lg font-semibold cursor-pointer ${
-                        shapModel === "time" ? "bg-background shadow-xs text-primary" : ""
+                        shapModel === "time"
+                          ? "bg-background shadow-xs text-primary"
+                          : ""
                       }`}
                     >
                       Tiempo
@@ -588,7 +715,9 @@ export default function ConfiguracionPage() {
                       size="sm"
                       onClick={() => setShapModel("risk")}
                       className={`text-xs px-3.5 h-8.5 rounded-lg font-semibold cursor-pointer ${
-                        shapModel === "risk" ? "bg-background shadow-xs text-primary" : ""
+                        shapModel === "risk"
+                          ? "bg-background shadow-xs text-primary"
+                          : ""
                       }`}
                     >
                       Riesgo
@@ -599,9 +728,14 @@ export default function ConfiguracionPage() {
                   {isOffline ? (
                     <div className="flex flex-col items-center justify-center p-8 border border-dashed border-border/80 rounded-2xl bg-muted/20 text-muted-foreground min-h-[350px]">
                       <AlertTriangle className="w-12 h-12 text-amber-500 mb-3 animate-pulse" />
-                      <h4 className="text-md font-bold text-foreground mb-1">Gráficos SHAP no disponibles en Modo Demo</h4>
+                      <h4 className="text-md font-bold text-foreground mb-1">
+                        Gráficos SHAP no disponibles en Modo Demo
+                      </h4>
                       <p className="text-xs max-w-sm text-center">
-                        El backend de FastAPI está desconectado. Levanta la API local para renderizar dinámicamente los gráficos de interpretabilidad de SHAP desde la carpeta de almacenamiento del modelo.
+                        El backend de FastAPI está desconectado. Levanta la API
+                        local para renderizar dinámicamente los gráficos de
+                        interpretabilidad de SHAP desde la carpeta de
+                        almacenamiento del modelo.
                       </p>
                     </div>
                   ) : (shapModel === "tasks" && shapTasksError) ||
@@ -609,9 +743,21 @@ export default function ConfiguracionPage() {
                     (shapModel === "risk" && shapRiskError) ? (
                     <div className="flex flex-col items-center justify-center p-8 border border-dashed border-border/80 rounded-2xl bg-muted/20 text-muted-foreground min-h-[350px]">
                       <Info className="w-12 h-12 text-muted-foreground mb-3" />
-                      <h4 className="text-md font-bold text-foreground mb-1">Gráficos SHAP no encontrados en disco</h4>
+                      <h4 className="text-md font-bold text-foreground mb-1">
+                        Gráficos SHAP no encontrados en disco
+                      </h4>
                       <p className="text-xs max-w-sm text-center">
-                        La API está activa pero no se encontraron las imágenes SHAP en la carpeta <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">data/shap/</code>. Asegúrate de ejecutar el script de entrenamiento sin saltarte el paso SHAP (<code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">python scripts/train_model.py</code>).
+                        La API está activa pero no se encontraron las imágenes
+                        SHAP en la carpeta{" "}
+                        <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">
+                          data/shap/
+                        </code>
+                        . Asegúrate de ejecutar el script de entrenamiento sin
+                        saltarte el paso SHAP (
+                        <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-[10px] text-foreground">
+                          python scripts/train_model.py
+                        </code>
+                        ).
                       </p>
                     </div>
                   ) : (

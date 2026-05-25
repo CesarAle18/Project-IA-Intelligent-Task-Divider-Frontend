@@ -481,7 +481,7 @@ export default function DashboardPage() {
                         }}
                       />
                       <YAxis
-                        domain={['auto', 'auto']}
+                        domain={["auto", "auto"]}
                         className="text-xs"
                         tick={{
                           fontSize: 10,
