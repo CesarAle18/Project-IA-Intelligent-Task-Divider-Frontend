@@ -92,7 +92,7 @@ export function PredictionResults({ result }: PredictionResultsProps) {
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
                 Intervalo de confianza (90%)
               </span>
-              <span className="text-xs font-bold text-foreground bg-primary/5 px-2 py-0.5 rounded border border-primary/10 inline-block mt-1 font-mono">
+              <span className="text-xs font-bold text-foreground bg-primary/5 px-2 py-0.5 rounded border border-primary/10 inline-block mt-1">
                 {result.ci_tasks[0]} – {result.ci_tasks[1]} tareas
               </span>
             </div>
@@ -114,13 +114,13 @@ export function PredictionResults({ result }: PredictionResultsProps) {
             </div>
           </CardHeader>
           <CardContent className="pt-2">
-            <CountUpNumber value={result.pred_time} suffix="días hábiles" />
+            <CountUpNumber value={result.pred_time} suffix="horas" />
             <div className="mt-3 pt-3 border-t border-border/40">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
                 Intervalo de confianza (90%)
               </span>
-              <span className="text-xs font-bold text-foreground bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10 inline-block mt-1 font-mono">
-                {result.ci_time[0]} – {result.ci_time[1]} días
+              <span className="text-xs font-bold text-foreground bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10 inline-block mt-1">
+                {result.ci_time[0]} – {result.ci_time[1]} horas
               </span>
             </div>
           </CardContent>
@@ -144,7 +144,7 @@ export function PredictionResults({ result }: PredictionResultsProps) {
               {result.risk_confidence !== undefined && (
                 <div className="flex flex-col items-end">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Confianza</span>
-                  <span className="text-sm font-bold text-primary font-mono bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
+                  <span className="text-sm font-bold text-primary bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
                     {(result.risk_confidence * 100).toFixed(1)}%
                   </span>
                 </div>

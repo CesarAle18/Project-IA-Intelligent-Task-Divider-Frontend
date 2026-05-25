@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   title: "IA Task Divider - Estimador Inteligente de Proyectos",
   description:
     "Dashboard inteligente para estimar tareas de proyectos de software usando IA",
-  generator: "v0.app",
   icons: {
     icon: [
       {

@@ -215,7 +215,7 @@ export default function HistorialPage() {
                               {entry.pred_tasks}
                             </TableCell>
                             <TableCell className="text-center font-bold text-indigo-600 dark:text-indigo-400">
-                              {entry.pred_time}d
+                              {entry.pred_time} hrs
                             </TableCell>
                             <TableCell>
                               <RiskBadge level={entry.pred_risk} size="sm" />
@@ -389,7 +389,7 @@ export default function HistorialPage() {
                             Tiempo Requerido
                           </span>
                           <span className="text-xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight">
-                            {selectedEntry.pred_time} días hábiles
+                            {selectedEntry.pred_time} horas
                           </span>
                         </div>
                         <div className="mt-3 pt-3 border-t border-dashed border-border/80">
@@ -398,7 +398,7 @@ export default function HistorialPage() {
                           </span>
                           <span className="text-xs font-semibold text-foreground/90 mt-1 block">
                             {selectedEntry.ci_time?.[0] ?? 0} a{" "}
-                            {selectedEntry.ci_time?.[1] ?? 0} días
+                            {selectedEntry.ci_time?.[1] ?? 0} horas
                           </span>
                         </div>
                       </CardContent>

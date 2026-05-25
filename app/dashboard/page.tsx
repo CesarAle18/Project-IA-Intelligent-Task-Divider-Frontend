@@ -11,6 +11,7 @@ import {
   Sparkles,
   Clock,
   ShieldAlert,
+  CircleHelp,
 } from "lucide-react";
 import {
   AreaChart,
@@ -32,6 +33,12 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { getMetrics, mockMetrics } from "@/lib/api";
 import type { MetricEntry } from "@/lib/types";
 import { toast } from "sonner";
@@ -45,6 +52,17 @@ async function fetchMetrics(): Promise<MetricEntry[]> {
     return mockMetrics;
   }
 }
+
+const DESCRIPTIONS: Record<string, string> = {
+  "Tasks MAE":
+    "Error Absoluto Medio (MAE) en la predicción de sub-tareas. Indica cuántas tareas se desvía el modelo en promedio. Valores más bajos significan mayor precisión.",
+  "Tasks R²":
+    "Coeficiente de determinación (R²) para sub-tareas. Mide qué tan bien el modelo explica la variabilidad de los datos. Cercano a 1 es mejor.",
+  "Risk F1-Score":
+    "Media armónica entre precisión y recall para la clasificación de riesgo. Equilibra falsos positivos y negativos. Mientras más alto, mejor.",
+  "Risk Accuracy":
+    "Proporción de predicciones de riesgo correctas sobre el total. Mide la precisión general del clasificador de riesgo.",
+};
 
 function MetricCard({
   label,
@@ -87,9 +105,30 @@ function MetricCard({
       className={`glass-premium shadow-sm hover:shadow-md transition-all duration-300 animate-slide-up ${className}`}
     >
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {label}
-        </CardTitle>
+        <div className="flex items-center gap-1.5">
+          <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            {label}
+          </CardTitle>
+          <TooltipProvider>
+            <UITooltip delayDuration={200}>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  className="cursor-help text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                >
+                  <CircleHelp className="w-3.5 h-3.5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                align="start"
+                className="text-sm max-w-64 p-3 leading-relaxed"
+              >
+                {DESCRIPTIONS[label] ?? "Sin descripción disponible."}
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
+        </div>
         <div className="p-1.5 bg-primary/10 rounded-lg text-primary">
           <Icon className="w-4 h-4" />
         </div>
@@ -266,6 +305,7 @@ export default function DashboardPage() {
                 label="Tasks R²"
                 value={latestMetric!.tasks_r2}
                 previousValue={previousMetric?.tasks_r2}
+                format="percent"
                 icon={Gauge}
                 className="stagger-2"
               />
