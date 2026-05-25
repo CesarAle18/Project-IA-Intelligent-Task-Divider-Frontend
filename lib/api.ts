@@ -5,6 +5,7 @@ import type {
   HistoryResponse,
   AppConfig,
   HealthStatus,
+  ModelValidation,
 } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -128,6 +129,16 @@ export async function updateConfig(
   });
 }
 
+export async function getModelValidation(): Promise<ModelValidation> {
+  return fetchApi<ModelValidation>("/model/validation");
+}
+
+export async function reloadModels(): Promise<{ message: string; meta: any }> {
+  return fetchApi<{ message: string; meta: any }>("/model/reload", {
+    method: "POST",
+  });
+}
+
 // Mock Data for development
 export const mockPredictionResult: PredictionResult = {
   id: 42,
@@ -137,6 +148,7 @@ export const mockPredictionResult: PredictionResult = {
   ci_time: [12, 17],
   pred_risk: "MEDIO",
   probas: { ALTO: 18.5, MEDIO: 63.2, BAJO: 18.3 },
+  risk_confidence: 0.632,
   created_at: "2025-07-14T10:32:00",
 };
 
@@ -258,18 +270,58 @@ export const mockMetrics: MetricEntry[] = [
 ];
 
 export const mockConfig: AppConfig = {
-  rendimiento_min: 0,
-  rendimiento_max: 1,
-  experiencia_valida: [1, 2, 3],
-  urgencia_valida: ["Baja", "Media", "Alta"],
-  outlier_columns: ["SP", "Complejidad", "Dependencias"],
+  columnas_requeridas: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias", "TipoTarea", "Urgencia", "y_tasks", "y_time", "y_risk"],
+  columnas_numericas: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias"],
+  columnas_categoricas: ["TipoTarea", "Urgencia"],
+  columnas_outlier_iqr: ["SP", "Complejidad", "Dependencias"],
+  tipos_esperados: {
+    SP: "numeric", Experiencia: "numeric", Rendimiento: "numeric", Complejidad: "numeric", Dependencias: "numeric",
+    TipoTarea: "string", Urgencia: "string", y_tasks: "numeric", y_time: "numeric", y_risk: "numeric"
+  },
+  rangos_validos: {
+    Rendimiento: [0.0, 1.0],
+    Experiencia: [1, 2, 3],
+    Urgencia: ["Baja", "Media", "Alta"],
+    y_risk: [0, 1, 2]
+  },
+  riesgo_label: {
+    "0": "ALTO",
+    "1": "MEDIO",
+    "2": "BAJO"
+  },
+  rf_params: {
+    "model__n_estimators": [50, 100, 200, 300],
+    "model__max_depth": [null, 5, 10, 15, 20]
+  },
+  gb_params: {
+    "model__n_estimators": [50, 100, 200],
+    "model__max_depth": [3, 4, 5, 6]
+  },
   kfold_splits: 5,
   random_state: 42,
   test_size: 0.2,
-  n_iter_search: 50,
-  ganador_tasks: "XGBoost",
-  ganador_time: "GradientBoosting",
-  ganador_risk: "XGBoost",
+  n_iter_search: 20
+};
+
+export const mockModelValidation: ModelValidation = {
+  timestamp: "2026-05-24 20:09:59",
+  version: "3.1-production",
+  ganadores: ["GradientBoosting", "GradientBoosting", "LogisticRegression"],
+  features: ["SP", "Experiencia", "Rendimiento", "Complejidad", "Dependencias", "TipoTarea", "Urgencia"],
+  hiperparametros_optimos: {
+    tasks: { "model__subsample": 0.7, "model__n_estimators": 200, "model__max_depth": 4, "model__learning_rate": 0.05 },
+    time: { "model__subsample": 0.8, "model__n_estimators": 50, "model__max_depth": 4, "model__learning_rate": 0.1 },
+    risk: {}
+  },
+  diagnostico_entrenamiento: {
+    leakage_warnings: [
+      "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_tasks'.",
+      "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_time'.",
+      "[WARNING] SOSPECHA (Mutual Info): 'SP' comparte un 100.0% de info con 'y_risk'."
+    ],
+    kfold_splits: 5,
+    calibracion_riesgo: "isotonic_cv5"
+  }
 };
 
 export const mockHistoryResponse: HistoryResponse = {
@@ -289,6 +341,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [8, 12],
       pred_risk: "BAJO",
       probas: { ALTO: 10, MEDIO: 25, BAJO: 65 },
+      risk_confidence: 0.65,
       created_at: "2025-07-14T10:32:00",
     },
     {
@@ -306,6 +359,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [15, 22],
       pred_risk: "ALTO",
       probas: { ALTO: 70, MEDIO: 20, BAJO: 10 },
+      risk_confidence: 0.70,
       created_at: "2025-07-13T14:20:00",
     },
     {
@@ -323,6 +377,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [4, 7],
       pred_risk: "BAJO",
       probas: { ALTO: 5, MEDIO: 15, BAJO: 80 },
+      risk_confidence: 0.80,
       created_at: "2025-07-12T09:15:00",
     },
     {
@@ -340,6 +395,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [12, 18],
       pred_risk: "MEDIO",
       probas: { ALTO: 25, MEDIO: 55, BAJO: 20 },
+      risk_confidence: 0.55,
       created_at: "2025-07-11T16:45:00",
     },
     {
@@ -357,6 +413,7 @@ export const mockHistoryResponse: HistoryResponse = {
       ci_time: [22, 30],
       pred_risk: "ALTO",
       probas: { ALTO: 75, MEDIO: 18, BAJO: 7 },
+      risk_confidence: 0.75,
       created_at: "2025-07-10T11:30:00",
     },
   ],

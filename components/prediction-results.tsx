@@ -141,6 +141,14 @@ export function PredictionResults({ result }: PredictionResultsProps) {
           <CardContent className="pt-2 space-y-3.5">
             <div className="flex items-center justify-between">
               <RiskBadge level={result.pred_risk} size="lg" />
+              {result.risk_confidence !== undefined && (
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Confianza</span>
+                  <span className="text-sm font-bold text-primary font-mono bg-primary/5 px-2 py-0.5 rounded border border-primary/10">
+                    {(result.risk_confidence * 100).toFixed(1)}%
+                  </span>
+                </div>
+              )}
             </div>
             <div className="border-t border-border/40 pt-3">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block mb-1.5">
