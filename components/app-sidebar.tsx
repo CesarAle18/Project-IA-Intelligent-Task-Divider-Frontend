@@ -20,7 +20,7 @@ const navItems = [
   { href: "/", label: "Predicción", icon: Sparkles },
   { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/historial", label: "Historial", icon: History },
-  { href: "/configuracion", label: "Configuración", icon: Settings },
+  //{ href: "/configuracion", label: "Configuración", icon: Settings },
 ];
 
 export function AppSidebar() {

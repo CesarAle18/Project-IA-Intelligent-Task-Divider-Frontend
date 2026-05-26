@@ -39,6 +39,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { getMetrics, mockMetrics } from "@/lib/api";
 import type { MetricEntry } from "@/lib/types";
 import { toast } from "sonner";
@@ -293,7 +299,7 @@ export default function DashboardPage() {
         ) : (
           <>
             {/* Metric Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <MetricCard
                 label="Tasks MAE"
                 value={latestMetric!.tasks_mae}
@@ -308,14 +314,6 @@ export default function DashboardPage() {
                 format="percent"
                 icon={Gauge}
                 className="stagger-2"
-              />
-              <MetricCard
-                label="Risk F1-Score"
-                value={latestMetric!.risk_f1}
-                previousValue={previousMetric?.risk_f1}
-                format="percent"
-                icon={Activity}
-                className="stagger-3"
               />
               <MetricCard
                 label="Risk Accuracy"
@@ -340,11 +338,11 @@ export default function DashboardPage() {
                       Evolución MAE — Regresión
                     </CardTitle>
                   </div>
-                  <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
-                    Error Absoluto Medio (Menor es mejor)
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4">
+                    <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider truncate">
+                      Error Absoluto Medio (Menor es mejor)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-4">
                   <ResponsiveContainer width="100%" height={240}>
                     <AreaChart
                       data={chartData}
@@ -445,6 +443,35 @@ export default function DashboardPage() {
                       />
                     </AreaChart>
                   </ResponsiveContainer>
+                  <Accordion type="single" collapsible className="mt-4 border-t pt-3">
+                    <AccordionItem value="interpretation" className="border-b-0">
+                      <AccordionTrigger className="text-xs font-semibold uppercase tracking-wider text-muted-foreground py-2 hover:no-underline">
+                        ¿Qué significa el MAE?
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-3 text-sm text-muted-foreground">
+                          <p>
+                            <strong className="text-foreground">MAE</strong> significa{" "}
+                            <strong>Error Absoluto Medio</strong>.
+                            Mide, en promedio, qué tan lejos están las predicciones del modelo comparado con los valores reales.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">Ejemplo práctico:</strong> Si el MAE es{" "}
+                            <strong>2</strong>, quiere decir que
+                            el modelo se equivoca por aproximadamente <strong>2 tareas</strong> (o <strong>2 horas</strong>) en cada predicción,
+                            sin importar si fue por encima o por debajo del valor real.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">¿Qué es un buen MAE?</strong> Depende del contexto, pero mientras más
+                            cercano a <strong>0</strong> mejor. Un MAE de 0 significaría que el modelo acierta siempre perfectamente.
+                          </p>
+                          <p className="text-xs italic border-t pt-2 mt-2 text-muted-foreground/70">
+                            Por eso dice <strong>"Menor es mejor"</strong> &mdash; queremos que el error promedio sea lo más bajo posible.
+                          </p>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </CardContent>
               </Card>
 
@@ -459,11 +486,11 @@ export default function DashboardPage() {
                       Evolución R² — Regresión
                     </CardTitle>
                   </div>
-                  <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
-                    Coeficiente de Determinación (Cercano a 1.0 es mejor)
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4">
+                    <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider truncate">
+                      Coeficiente de Determinación (Cercano a 1.0 es mejor)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-4">
                   <ResponsiveContainer width="100%" height={240}>
                     <AreaChart
                       data={chartData}
@@ -565,6 +592,36 @@ export default function DashboardPage() {
                       />
                     </AreaChart>
                   </ResponsiveContainer>
+                  <Accordion type="single" collapsible className="mt-4 border-t pt-3">
+                    <AccordionItem value="interpretation" className="border-b-0">
+                      <AccordionTrigger className="text-xs font-semibold uppercase tracking-wider text-muted-foreground py-2 hover:no-underline">
+                        ¿Qué significa el R²?
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-3 text-sm text-muted-foreground">
+                          <p>
+                            <strong className="text-foreground">R²</strong> (coeficiente de determinación) mide{" "}
+                            <strong>qué tan bien se ajusta el modelo</strong> a los datos reales.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">Ejemplo práctico:</strong> Si el R² es{" "}
+                            <strong>0.90</strong>, significa que
+                            el modelo logra explicar el <strong>90%</strong> del comportamiento real de los datos.
+                            Solo queda un <strong>10%</strong> que el modelo no logra capturar.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">¿Qué es un buen R²?</strong> Un valor de <strong>1.0</strong> sería perfecto
+                            (el modelo acierta todo). Un valor de <strong>0</strong> significa que el modelo no es mejor que simplemente
+                            adivinar siempre el promedio. Entre más cerca de 1.0, mejor.
+                          </p>
+                          <p className="text-xs italic border-t pt-2 mt-2 text-muted-foreground/70">
+                            Por eso dice <strong>"Cercano a 1.0 es mejor"</strong> &mdash; buscamos que el modelo explique la mayor parte del
+                            comportamiento real.
+                          </p>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </CardContent>
               </Card>
 
@@ -579,11 +636,11 @@ export default function DashboardPage() {
                       Precisión de Clasificación (Riesgo)
                     </CardTitle>
                   </div>
-                  <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
-                    Evaluación de clasificación de riesgo del proyecto
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4">
+                    <CardDescription className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider truncate">
+                      Evaluación de clasificación de riesgo del proyecto
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-4">
                   <ResponsiveContainer width="100%" height={240}>
                     <AreaChart
                       data={chartData}
@@ -685,6 +742,43 @@ export default function DashboardPage() {
                       />
                     </AreaChart>
                   </ResponsiveContainer>
+                  <Accordion type="single" collapsible className="mt-4 border-t pt-3">
+                    <AccordionItem value="interpretation" className="border-b-0">
+                      <AccordionTrigger className="text-xs font-semibold uppercase tracking-wider text-muted-foreground py-2 hover:no-underline">
+                        ¿Qué significan estas métricas?
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-3 text-sm text-muted-foreground">
+                          <p>
+                            <strong className="text-foreground">Accuracy</strong> (precisión general):
+                            De cada <strong>100 predicciones</strong> de riesgo, ¿cuántas acertó el modelo?
+                            Si es 95%, acertó 95 y falló 5.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">Precision</strong> (confiabilidad):
+                            Cuando el modelo dice que un proyecto es de <strong>ALTO</strong> riesgo,
+                            ¿qué tan seguido acierta? Una precisión alta significa que puedes confiar
+                            cuando te alerta de un riesgo alto.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">Recall</strong> (capacidad de detección):
+                            De todos los proyectos que <strong>realmente</strong> son de alto riesgo,
+                            ¿cuántos logró detectar el modelo? Un recall bajo significa que se le
+                            escapan proyectos riesgosos.
+                          </p>
+                          <p>
+                            <strong className="text-foreground">F1-Score</strong> (balance):
+                            Es un promedio entre Precision y Recall. Útil cuando ninguna de las dos
+                            es suficiente por sí sola. Mientras más alto, mejor equilibradas están
+                            ambas.
+                          </p>
+                          <p className="text-xs italic border-t pt-2 mt-2 text-muted-foreground/70">
+                            Valores cercanos a <strong>1.0 (100%)</strong> indican mejor rendimiento en todas las métricas.
+                          </p>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 </CardContent>
               </Card>
             </div>
