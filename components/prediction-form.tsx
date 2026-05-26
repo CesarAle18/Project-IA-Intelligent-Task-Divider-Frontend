@@ -136,8 +136,10 @@ export function PredictionForm({ onResult }: PredictionFormProps) {
                 <div className="group relative">
                   <Info className="w-3.5 h-3.5 text-muted-foreground cursor-help" />
                   <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-48 p-2 bg-popover border border-border text-popover-foreground text-xs rounded shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50">
-                    Esfuerzo relativo asignado a la tarea inicial. Solo valores
-                    de la secuencia Fibonacci: 1, 2, 3, 5, 8, 13, 21, 34, 55.
+                    Miden el esfuerzo y dificultad de una tarea. Se usa la
+                    secuencia Fibonacci (1, 2, 3, 5, 8, 13...) porque las tareas
+                    más grandes tienen mayor complejidad e incertidumbre,
+                    facilitando estimaciones más realistas.
                   </span>
                 </div>
               </div>
