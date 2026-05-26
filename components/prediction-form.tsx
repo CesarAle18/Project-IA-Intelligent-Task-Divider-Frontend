@@ -256,19 +256,19 @@ export function PredictionForm({ onResult }: PredictionFormProps) {
               >
                 <ToggleGroupItem
                   value="1"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Junior (1)
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="2"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Mid (2)
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="3"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Senior (3)
                 </ToggleGroupItem>
@@ -288,19 +288,19 @@ export function PredictionForm({ onResult }: PredictionFormProps) {
               >
                 <ToggleGroupItem
                   value="Baja"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Baja
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="Media"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Media
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="Alta"
-                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-background data-[state=on]:shadow-xs transition-all"
+                  className="text-xs font-medium py-1.5 rounded-md hover:bg-background/60 data-[state=on]:bg-primary/10 data-[state=on]:text-primary data-[state=on]:shadow-xs transition-all"
                 >
                   Alta
                 </ToggleGroupItem>
