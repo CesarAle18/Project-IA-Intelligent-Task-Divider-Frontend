@@ -371,11 +371,11 @@ export default function HistorialPage() {
                         </div>
                         <div className="mt-3 pt-3 border-t border-dashed border-border/80">
                           <span className="text-[10px] text-muted-foreground/80 font-bold uppercase tracking-wider block">
-                            Intervalo de confianza (90%)
+                            Intervalo de confianza
                           </span>
                           <span className="text-xs font-semibold text-foreground/90 mt-1 block">
-                            {selectedEntry.ci_tasks?.[0] ?? 0} a{" "}
-                            {selectedEntry.ci_tasks?.[1] ?? 0} sub-tareas
+                            {(selectedEntry.ci_tasks?.[0] ?? 0).toFixed(2)} a{" "}
+                            {(selectedEntry.ci_tasks?.[1] ?? 0).toFixed(2)} sub-tareas
                           </span>
                         </div>
                       </CardContent>
@@ -394,11 +394,11 @@ export default function HistorialPage() {
                         </div>
                         <div className="mt-3 pt-3 border-t border-dashed border-border/80">
                           <span className="text-[10px] text-muted-foreground/80 font-bold uppercase tracking-wider block">
-                            Intervalo de confianza (90%)
+                            Intervalo de confianza
                           </span>
                           <span className="text-xs font-semibold text-foreground/90 mt-1 block">
-                            {selectedEntry.ci_time?.[0] ?? 0} a{" "}
-                            {selectedEntry.ci_time?.[1] ?? 0} horas
+                            {(selectedEntry.ci_time?.[0] ?? 0).toFixed(2)} a{" "}
+                            {(selectedEntry.ci_time?.[1] ?? 0).toFixed(2)} horas
                           </span>
                         </div>
                       </CardContent>

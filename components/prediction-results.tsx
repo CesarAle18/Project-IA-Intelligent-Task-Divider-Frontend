@@ -90,10 +90,10 @@ export function PredictionResults({ result }: PredictionResultsProps) {
             <CountUpNumber value={result.pred_tasks} suffix="tareas" />
             <div className="mt-3 pt-3 border-t border-border/40">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
-                Intervalo de confianza (90%)
+                Intervalo de confianza 
               </span>
               <span className="text-xs font-bold text-foreground bg-primary/5 px-2 py-0.5 rounded border border-primary/10 inline-block mt-1">
-                {result.ci_tasks[0]} – {result.ci_tasks[1]} tareas
+                {result.ci_tasks[0].toFixed(2)} – {result.ci_tasks[1].toFixed(2)} tareas
               </span>
             </div>
           </CardContent>
@@ -117,10 +117,10 @@ export function PredictionResults({ result }: PredictionResultsProps) {
             <CountUpNumber value={result.pred_time} suffix="horas" />
             <div className="mt-3 pt-3 border-t border-border/40">
               <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider block">
-                Intervalo de confianza (90%)
+                Intervalo de confianza 
               </span>
               <span className="text-xs font-bold text-foreground bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10 inline-block mt-1">
-                {result.ci_time[0]} – {result.ci_time[1]} horas
+                {result.ci_time[0].toFixed(2)} – {result.ci_time[1].toFixed(2)} horas
               </span>
             </div>
           </CardContent>
